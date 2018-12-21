@@ -8,7 +8,7 @@ public class BoardBean {
 	private int readcount;
 	private int ref;
 	private int re_step;
-	private int re_lever;
+	private int re_level;
 	private String content;
 	private String ip;
 	private String subject;
@@ -60,11 +60,11 @@ public class BoardBean {
 	public void setRe_step(int re_step) {
 		this.re_step = re_step;
 	}
-	public int getRe_lever() {
-		return re_lever ;
+	public int getRe_level() {
+		return re_level ;
 	}
-	public void setRe_lever(int re_lever) {
-		this.re_lever = re_lever;
+	public void setRe_level(int re_level) {
+		this.re_level = re_level;
 	}
 	public String getContent() {
 		return content == null ? "" : content.trim();

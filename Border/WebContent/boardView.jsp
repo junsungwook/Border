@@ -28,6 +28,9 @@ request.setCharacterEncoding("utf-8");
 int num = Integer.parseInt(request.getParameter("num"));
 BoardDAO dao = BoardDAO.getInstance();
 BoardBean bean = dao.getBoard(num); //상세보기
+int ref = bean.getRef();
+int re_step = bean.getRe_step();
+int re_level = bean.getRe_level();
 %>
 <body>
 <div class="container">
@@ -55,9 +58,9 @@ BoardBean bean = dao.getBoard(num); //상세보기
 		</tr>
 		<tr>
 			<td colspan=4>
-			<input type="button" value="글수정">
+			<input type="button" value="글수정" onclick="location='updateForm.jsp?num=<%=bean.getNum()%>'">
 			<input type="button" value="글삭제" onclick="location='deleteForm.jsp?num=<%=bean.getNum()%>'">
-			<input type="button" value="답글쓰기">
+			<input type="button" value="답글쓰기" onclick="location='board.jsp?num=<%=num%>&ref=<%=ref%>&re_step=<%=re_step%>&re_level=<%=re_level%>'">
 			<input type="button" value="글목록" onclick="location='boardList.jsp'">
 			</td>
 		</tr>

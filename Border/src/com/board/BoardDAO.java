@@ -69,22 +69,53 @@ public class BoardDAO {
    public void boardInsert(BoardBean b) {
          Connection con= null;
          PreparedStatement ps =  null;
+         ResultSet rs = null;
+         int number = 1;
+         String sql="";
             try {
                con = getConnection();
-               String sql = "insert into board (num, writer,subject, content, passwd,email,ip,reg_date) values (board_seq.nextval,?,?,?,?,?,?,SYSDATE)";
+               //부모글
+               int num = b.getNum();
+               int ref=b.getRef();
+               int re_step=b.getRe_step();
+               int re_level=b.getRe_level();
+               ps=con.prepareStatement("select max(num) from board");
+               rs=ps.executeQuery();
+               if(rs.next()) {
+            	   number = rs.getInt(1)+1;
+               }
+               //새글일 때와 답변글을 구분하는 if else
+               if(num!=0) { //답변글
+            	   sql="update board set re_step = re_step+1 where ref=? and re_step>?";
+            	   ps=con.prepareStatement(sql);
+            	   ps.setInt(1, ref);
+            	   ps.setInt(2, re_step);
+            	   ps.executeUpdate();
+            	   re_step=re_step+1;
+            	   re_level=re_level+1;
+               }
+               else { //새글일때   writeForm에서 넘긴 값이 있어서 안넘겨도 무방 
+            	   ref = number;
+            	   re_step=0;
+            	   re_level=0;
+               }
+               sql = "insert into board (num,writer,email,passwd,reg_date,readcount,ref,re_step,re_level,content,ip,subject) values(board_seq.nextval,?,?,?,SYSDATE,0,?,?,?,?,?,?)";
                ps = con.prepareStatement(sql);
-               ps.setString(1,b.getWriter());
-               ps.setString(2, b.getSubject());
-               ps.setString(3, b.getContent());
-               ps.setString(4, b.getPasswd());
-               ps.setString(5, b.getEmail());
-               ps.setString(6, b.getIp());
+               ps.setString(1, b.getWriter());
+               ps.setString(2, b.getEmail());
+               ps.setString(3, b.getPasswd());
+               ps.setInt(4, ref);
+               ps.setInt(5, re_step);
+               ps.setInt(6, re_level);
+               ps.setString(7, b.getContent());
+               ps.setString(8, b.getIp());
+               ps.setString(9, b.getSubject());
                ps.executeUpdate();
             } catch (Exception e) {
                // TODO Auto-generated catch block
                e.printStackTrace();
             }finally {
-               closeCon(con,ps);
+               closeCon(con,ps,rs);
             }
             
       }
@@ -100,9 +131,9 @@ public class BoardDAO {
          try {
             con = getConnection();
             if(field.equals("")) {
-               sql = "select * from (select rownum rn,aa.* from (select * from board order by reg_date desc)aa) where rn>=? and rn<=?";
+               sql = "select * from (select rownum rn,aa.* from (select * from board order by ref desc,re_step asc)aa) where rn>=? and rn<=?";
                }else {
-                  sql="select * from (select rownum rn,aa.* from (select * from board where "+field+" like '%"+search+"%' order by reg_date desc)aa) where rn>=? and rn<=?";
+                  sql="select * from (select rownum rn,aa.* from (select * from board where "+field+" like '%"+search+"%' order by ref desc,re_step asc)aa) where rn>=? and rn<=?";
                }
             ps = con.prepareStatement(sql);
             ps.setInt(1, startRow);
@@ -116,6 +147,12 @@ public class BoardDAO {
                b.setReg_date(rs.getString("reg_date"));
                b.setReadcount(rs.getInt("readcount"));
                b.setIp(rs.getString("ip"));
+               b.setContent(rs.getString("content"));
+               b.setPasswd(rs.getString("passwd"));
+               b.setEmail(rs.getString("email"));
+               b.setRef(rs.getInt("ref"));
+               b.setRe_step(rs.getInt("re_step"));
+               b.setRe_level(rs.getInt("re_level"));
                arr.add(b);
             }
          } catch (Exception e) {
@@ -149,6 +186,10 @@ public class BoardDAO {
 	               b.setIp(rs.getString("ip"));
 	               b.setContent(rs.getString("content"));
 	               b.setPasswd(rs.getString("passwd"));
+	               b.setEmail(rs.getString("email"));
+	               b.setRef(rs.getInt("ref"));
+	               b.setRe_step(rs.getInt("re_step"));
+	               b.setRe_level(rs.getInt("re_level"));
 	            }
 	         } catch (Exception e) {
 	            // TODO Auto-generated catch block
@@ -177,6 +218,37 @@ public class BoardDAO {
 		            	 ps1.setInt(1, num);
 		            	 ps1.executeUpdate();
 		            	 b = true;
+	            	}	 
+	            }
+	         } catch (Exception e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	         }finally {
+	            closeCon(con,ps,rs);
+	         }
+			return b;
+	   }
+   //수정
+   public boolean updateBoard(BoardBean bean) {
+	   
+	      Connection con =null;
+	      PreparedStatement ps = null;
+	      ResultSet rs = null;
+	      Statement st = null;
+	      String sql="";
+	      boolean b=false;
+	         try {
+	        	con=getConnection();
+	            sql = "select passwd from board where num=?";
+	            ps = con.prepareStatement(sql);
+	            ps.setInt(1, bean.getNum());
+	            rs = ps.executeQuery();
+	            if(rs.next()) {
+	            	if(rs.getString("passwd").equals(bean.getPasswd())) {
+	            		sql = "update board set writer='"+bean.getWriter()+"',email='"+bean.getEmail()+"',content='"+bean.getContent()+"',subject='"+bean.getSubject()+"' where num="+bean.getNum();
+	            		st = con.createStatement();
+	                    st.executeQuery(sql);
+		            	b = true;
 	            	}	 
 	            }
 	            System.out.println("dd:"+sql);

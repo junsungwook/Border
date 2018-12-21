@@ -97,7 +97,23 @@ $(document).ready(function () {
        <tbody>
           <tr>
 	             <td><%=arr.get(i).getNum() %></td>
-	             <td><a href="boardView.jsp?num=<%=arr.get(i).getNum()%>"><%=arr.get(i).getSubject()%></a></td>
+	             <td>
+	             	<%
+	             		int wid=0;
+	             		if(arr.get(i).getRe_level()>0){
+	             			wid=7*(arr.get(i).getRe_level());
+	             	%>
+	             		<img src="images/level.gif" width="<%=wid %>" height="16">
+	             		<img src="images/re.gif">
+	             	<%
+	             		}else{
+	             	%>
+	             	<img src="images/level.gif" width="<%=wid %>" height="16">
+	             	<%
+	             		}
+	             	%>
+	             	<a href="boardView.jsp?num=<%=arr.get(i).getNum()%>"><%=arr.get(i).getSubject()%></a>
+	             </td>
 	             <td><%=arr.get(i).getWriter() %></td>
 	             <td><%=arr.get(i).getReg_date() %></td>
 	             <td><%=arr.get(i).getReadcount() %></td>

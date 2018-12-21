@@ -1,3 +1,5 @@
+<%@page import="com.board.BoardBean"%>
+<%@page import="com.board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -8,17 +10,10 @@
 
 <%
 request.setCharacterEncoding("utf-8");
-//새글일 때는 값을 이렇게 주고 
-int num = 0;
-int ref = 1,re_step = 0, re_level = 0;
+int num = Integer.parseInt(request.getParameter("num"));
+BoardDAO dao = BoardDAO.getInstance();
+BoardBean bean = dao.getBoard(num); //상세보기
 
-//답글일 때는 이렇게 넘어온 값으로 받자
-if(request.getParameter("num")!=null){
-	num = Integer.parseInt(request.getParameter("num"));
-	ref = Integer.parseInt(request.getParameter("ref"));
-	re_step = Integer.parseInt(request.getParameter("re_step"));
-	re_level = Integer.parseInt(request.getParameter("re_level"));
-}
 %>
 </head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -48,46 +43,39 @@ body{
 </style>
 <body>
 <div class="container">
-<form action="boardProc.jsp" method="post">
-<input type = "hidden" name = "num" value="<%=num %>">
-<input type = "hidden" name = "ref" value="<%=ref %>">
-<input type = "hidden" name = "re_step" value="<%=re_step %>">
-<input type = "hidden" name = "re_level" value="<%=re_level %>">
+<form action="updateProc.jsp" method="post">
+<input type = "hidden" name = "num" value="<%=bean.getNum() %>">
+<input type = "hidden" name = "ref" value="<%=bean.getRef() %>">
+<input type = "hidden" name = "re_step" value="<%=bean.getRe_step() %>">
+<input type = "hidden" name = "re_level" value="<%=bean.getRe_level() %>">
 	<table id="blueone" >
 		<tr>
 			<th colspan=2><strong><a href ="boardList.jsp" ><button type="button" class="btn btn-warning">LIST</button> </a></strong></th>
 		</tr>
 		<tr>
 			<td>이름</td>
-			<td><input type="text" name="writer" id="writer"  class="form-control"></td>
+			<td><input type="text" name="writer" id="writer"  class="form-control" value="<%=bean.getWriter()%>"></td>
 		</tr>
 		<tr>
 			<td>제목</td>
 			<td>
-			<%if(request.getParameter("num")==null){%>
-				<input type="text" name="subject" id="subject" class="form-control">
-			<%}
-			else{%>
-				<input type="text" name="subject" id="subject" value="[답변]" class="form-control">
-			<% }%>
-			
-			
+				<input type="text" name="subject" id="subject" value="<%=bean.getSubject()%>" class="form-control">
 			</td>
 		</tr>
 		<tr>
 			<td>email</td>
-			<td><input type="email" name="email" id="email" class="form-control"></td>
+			<td><input type="text" name="email" id="email" class="form-control" value="<%=bean.getEmail()%>"></td>
 		</tr>
 		<tr>
 			<td>내용</td>
-			<td><textarea rows="10" cols="50" name="content" id="content" class="form-control"></textarea></td>
+			<td><textarea rows="10" cols="50" name="content" id="content" class="form-control"><%=bean.getContent()%></textarea></td>
 		</tr>
 		<tr>
 			<td>비밀번호</td>
 			<td><input type="password" name="passwd"  id="passwd" class="form-control"></td>
 		</tr>
 		<tr>
-			<td><input type="submit" class="btn btn-warning" value="글쓰기" id="input"></td>
+			<td><input type="submit" class="btn btn-warning" value="글수정" id="input"></td>
 			<td><input type="reset" class="btn btn-warning" name="다시쓰기"  ></td>
 		</tr>
 	</table>
