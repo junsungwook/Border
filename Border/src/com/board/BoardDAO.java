@@ -169,20 +169,21 @@ public class BoardDAO {
 	      PreparedStatement ps = null;
 	      ResultSet rs = null;
 	      String sql="";
-	      BoardBean b=null;
+	      String sql1="";
+	      BoardBean b = null;
 	         try {
 	        	con=getConnection();
 	            sql = "select * from board where num=?";
 	            ps = con.prepareStatement(sql);
 	            ps.setInt(1, num);
 	            rs = ps.executeQuery();
-	            while (rs.next()) {
+	            if (rs.next()) {
 	               b = new BoardBean();
 	               b.setNum(rs.getInt("num"));
 	               b.setSubject(rs.getString("subject"));
 	               b.setWriter(rs.getString("writer"));
 	               b.setReg_date(rs.getString("reg_date"));
-	               b.setReadcount(rs.getInt("readcount"));
+	               b.setReadcount(rs.getInt("readcount")+1);
 	               b.setIp(rs.getString("ip"));
 	               b.setContent(rs.getString("content"));
 	               b.setPasswd(rs.getString("passwd"));
@@ -191,6 +192,11 @@ public class BoardDAO {
 	               b.setRe_step(rs.getInt("re_step"));
 	               b.setRe_level(rs.getInt("re_level"));
 	            }
+	            sql1 = "update board set readcount=? where num=?";
+	           	PreparedStatement ps1 =con.prepareStatement(sql1); 
+	           	ps1.setInt(1, b.getReadcount());
+	           	ps1.setInt(2, num);
+	           	ps1.executeUpdate();
 	         } catch (Exception e) {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace();
