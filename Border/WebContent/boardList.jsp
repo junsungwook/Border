@@ -7,24 +7,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>부산 IT교육 센터 게시판</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <style>  
    body { background: #fff; padding : 30px;}
    #blueone {
-     border-collapse: collapse;
+     
    }  
-   #blueone th {
+   #blueone thead{
      padding: 10px;
-     color: #168;
-     border-bottom: 3px solid #FACC2E;
      text-align: left;
+     border-bottom: 2px solid blue;
    }
-   #blueone td {
-     color: #669;
-     padding: 10px;
-     border-bottom: 1px solid #ddd;
-   }
+
 </style>
 <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
@@ -65,39 +60,23 @@ $(document).ready(function () {
    int number=count-(currentPage-1)*pageSize;
 %>
 
-
-<%=count %>
-<form name="search" action="boardList.jsp">
-<div class="col-xs-2">
-   <select id="field" class="form-control" name = "field">
-      <option value="subject"> 제목
-      <option value="writer"> 작성자
-   </select>
-</div>
-<div class="col-xs-3">
-   <input type='text' id='word' name='word' size='10' class="form-control" placeholder="검색어입력">
-</div>
-   <input type='button' class="btn btn-default" value="검색" id='searchIt'>
-</form>
-<table id="blueone" class="table table-hover">
-   <tr>
-      <th colspan="5">
-      <th>
-   </tr>
-   <tr>
-      <th>번호</th>
-      <th>제목</th>
-      <th>작성자</th>
-      <th>작성일</th>
-      <th>조회</th>
-      <th>ip</th>
-   </tr>
+<table id="blueone" class="table table-hover table-striped table-dark">
+	<thead class="thead-light">  
+	   <tr>
+	      <th scope="col">번호</th>
+	      <th scope="col">제목</th>
+	      <th scope="col">작성자</th>
+	      <th scope="col">작성일</th>
+	      <th scope="col">조회</th>
+	      <th scope="col">ip</th>
+	   </tr>
+	</thead>
    <% 
     for(int i =0; i <arr.size(); i ++){
-       %>
+   %>
        <tbody>
           <tr>
-	             <td><%=number--%></td>
+	             <th scope="row"><%=number--%></th>
 	             <td>
 	             	<%
 	             		int wid=0;
@@ -154,6 +133,19 @@ $(document).ready(function () {
       }
    }
 %>
+<br><br>
+<form name="search" action="boardList.jsp">
+	<div class="col-xs-2">
+	   <select id="field" class="form-control" name="field">
+	      <option value="subject"> 제목
+	      <option value="writer"> 작성자
+	   </select>
+	</div>
+	<div class="col-xs-3">
+	   <input type='text' id='word' name='word' size='10' class="form-control" placeholder="검색어입력">
+	</div>
+	   <input type='button' class="btn btn-default" value="검색" id='searchIt'>
+</form>
 </div>
 </body>
 </html>

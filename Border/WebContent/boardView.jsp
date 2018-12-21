@@ -68,7 +68,7 @@ $(document).ready(function(){
 </script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>여기에 제목을 입력하십시오</title>
+<title></title>
 </head>
 
 <%
@@ -82,9 +82,9 @@ int re_level = bean.getRe_level();
 %>
 <body>
 <div class="container">
-<h2>글내용 보기</h2>
+<h1 class="display-4">글 상세내용</h1>
 	<input type="hidden" name="num" id="num" value="<%=num %>">
-	<table width="500" border="1" align="center" class="table">
+	<table width="500" border="1" align="center" class="table table-striped">
 		<tr>
 			<td width="100">글번호</td>
 			<td><%=bean.getNum()%></td>
@@ -101,25 +101,26 @@ int re_level = bean.getRe_level();
 			<td width="100">글제목</td>
 			<td colspan=3><%=bean.getSubject()%></td>
 		</tr>
-		<tr>
+		<tr height="400">
 			<td width="100">글내용</td>
-			<td colspan=3><%=bean.getContent()%></td>
+			<td colspan=3 align="left"><%=bean.getContent()%></td>
 		</tr>
 		<tr>
 			<td colspan=4>
-			<input type="button" value="글수정" onclick="location='updateForm.jsp?num=<%=bean.getNum()%>'">
-			<input type="button" value="글삭제" onclick="location='deleteForm.jsp?num=<%=bean.getNum()%>'">
-			<input type="button" value="답글쓰기" onclick="location='board.jsp?num=<%=num%>&ref=<%=ref%>&re_step=<%=re_step%>&re_level=<%=re_level%>'">
-			<input type="button" value="글목록" onclick="location='boardList.jsp'">
+			<input type="button" value="글수정" class="btn btn-default" onclick="location='updateForm.jsp?num=<%=bean.getNum()%>'">
+			<input type="button" value="글삭제" class="btn btn-default" onclick="location='deleteForm.jsp?num=<%=bean.getNum()%>'">
+			<input type="button" value="답글쓰기" class="btn btn-default" onclick="location='board.jsp?num=<%=num%>&ref=<%=ref%>&re_step=<%=re_step%>&re_level=<%=re_level%>'">
+			<input type="button" value="글목록" class="btn btn-default" onclick="location='boardList.jsp'">
 			</td>
 		</tr>
 	</table>
 	<br><br><br><br>
+	<div id="result"></div>
 	<div align="right">
 		<textarea row="5" cols="50" id="msg" class="form-control"></textarea>
 		<input type="button" value="댓글쓰기" id="commentBtn" class="btn btn-default">
 	</div>
-	<div id="result"></div>
+	
 </div>
 </body>
 </html>
