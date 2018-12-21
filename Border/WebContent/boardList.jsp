@@ -62,6 +62,7 @@ $(document).ready(function () {
    ArrayList<BoardBean> arr = dao.boardList(field,word,startRow,endRow);
    //여기서 사이즈 재는 놈을 불러서 밑에 번호 버튼의 크기나 이러저런거 지정할 준비한다
    int count = dao.size(field,word);
+   int number=count-(currentPage-1)*pageSize;
 %>
 
 
@@ -96,7 +97,7 @@ $(document).ready(function () {
        %>
        <tbody>
           <tr>
-	             <td><%=arr.get(i).getNum() %></td>
+	             <td><%=number--%></td>
 	             <td>
 	             	<%
 	             		int wid=0;

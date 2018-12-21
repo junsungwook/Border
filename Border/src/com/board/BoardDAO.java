@@ -205,6 +205,59 @@ public class BoardDAO {
 	         }
 	      return b;
 	   }
+   //´ñ±Û ¾²±â
+   public void commentInsert(CommentBean cb) {
+       Connection con= null;
+       PreparedStatement ps =  null;
+       ResultSet rs = null;
+       String sql="";
+          try {
+             con = getConnection();
+             sql = "insert into commentboard (cnum,userid,regdate,msg,bnum) values(cnum_seq.nextval,?,sysdate,?,?)";
+             ps = con.prepareStatement(sql);
+             ps.setString(1, cb.getUserid());
+             ps.setString(2, cb.getMsg());
+             ps.setInt(3, cb.getBnum());
+             ps.executeUpdate();
+          } catch (Exception e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+          }finally {
+             closeCon(con,ps,rs);
+          }
+          
+    }
+   //´ñ±Û »Ñ¸®±â
+   public ArrayList<CommentBean> commentList(int bnum) {
+       Connection con= null;
+       PreparedStatement ps =  null;
+       ResultSet rs = null;
+       ArrayList<CommentBean> arr = new ArrayList<>();
+       String sql="";
+          try {
+             con = getConnection();
+             sql = "select * from commentboard where bnum=?";
+             ps = con.prepareStatement(sql);
+             ps.setInt(1, bnum);
+             rs = ps.executeQuery();
+             while(rs.next()) {
+            	 CommentBean cb = new CommentBean();
+            	 cb.setCnum(rs.getInt("cnum"));
+            	 cb.setUserid(rs.getString("userid"));
+            	 cb.setRegdate(rs.getString("regdate"));
+            	 cb.setMsg(rs.getString("msg"));
+            	 cb.setBnum(rs.getInt("bnum")); 
+ 				 arr.add(cb);
+             }
+          } catch (Exception e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+          }finally {
+             closeCon(con,ps,rs);
+          }
+          return arr;
+          
+    }
    public boolean delBoard(int num,String passwd) {
 	      Connection con =null;
 	      PreparedStatement ps = null;
@@ -236,7 +289,6 @@ public class BoardDAO {
 	   }
    //¼öÁ¤
    public boolean updateBoard(BoardBean bean) {
-	   
 	      Connection con =null;
 	      PreparedStatement ps = null;
 	      ResultSet rs = null;
@@ -266,27 +318,27 @@ public class BoardDAO {
 	         }
 			return b;
 	   }
-private void closeCon(Connection con, PreparedStatement ps){
-      
-      try {
-         if(con!=null)con.close();
-         if(ps!=null)ps.close();
-      } catch (SQLException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      }
-   
-}
-private void closeCon(Connection con,Statement st, ResultSet rs){
-   
-   try {
-      if(con!=null)con.close();
-      if(st!=null)st.close();
-      if(rs!=null)rs.close();
-   } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-   }
-}
+	private void closeCon(Connection con, PreparedStatement ps){
+	      
+	      try {
+	         if(con!=null)con.close();
+	         if(ps!=null)ps.close();
+	      } catch (SQLException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
+	      }
+	   
+	}
+	private void closeCon(Connection con,Statement st, ResultSet rs){
+	   
+	   try {
+	      if(con!=null)con.close();
+	      if(st!=null)st.close();
+	      if(rs!=null)rs.close();
+	   } catch (SQLException e) {
+	      // TODO Auto-generated catch block
+	      e.printStackTrace();
+	   }
+	}
    
 }
