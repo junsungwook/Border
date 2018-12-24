@@ -44,20 +44,25 @@ $(document).ready(function(){
 			type:"post",
 			data:{"msg":$("#msg").val(),"num":$("#num").val()},
 			success:function(data){
-				data = $.parseJSON(data);
-				var htmlStr="";
-				htmlStr +="<table class='table table-striped table-dark'>";
-				for(var i=0; i<data.length;i++){
-					htmlStr +="<tr>";
-					htmlStr +="<td>"+data[i].cnum+"</td>";
-					htmlStr +="<td>"+data[i].userid+"</td>";
-					htmlStr +="<td>"+data[i].regdate+"</td>";
-					htmlStr +="<td>"+data[i].msg+"</td>";
-					htmlStr +="</tr>";
-				}
-				htmlStr +="</table>";
-				$("#result").html(htmlStr);	
-				$("#msg").val("");
+				if(data.trim()==1){
+					alert("로그인하세요");
+					location.href="login.jsp";
+				}else{
+					data = $.parseJSON(data);
+					var htmlStr="";
+					htmlStr +="<table class='table table-striped table-dark'>";
+					for(var i=0; i<data.length;i++){
+						htmlStr +="<tr>";
+						htmlStr +="<td>"+data[i].cnum+"</td>";
+						htmlStr +="<td>"+data[i].userid+"</td>";
+						htmlStr +="<td>"+data[i].regdate+"</td>";
+						htmlStr +="<td>"+data[i].msg+"</td>";
+						htmlStr +="</tr>";
+					}
+					htmlStr +="</table>";
+					$("#result").html(htmlStr);	
+					$("#msg").val("");
+				}	
 			},
 			error:function(e){
 				alert("error : "+ e);
