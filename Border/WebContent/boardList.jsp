@@ -19,7 +19,12 @@
      text-align: left;
      border-bottom: 2px solid blue;
    }
-
+	#sele{
+	margin-left: 250px;
+	}
+	#searchIt{
+		margin-right: 50px;
+	}
 </style>
 <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
@@ -104,6 +109,7 @@ $(document).ready(function () {
     }
       %>
 </table>
+
 <%
    if(count>0){//53
       //총페이지수
@@ -133,9 +139,8 @@ $(document).ready(function () {
       }
    }
 %>
-<br><br>
 <form name="search" action="boardList.jsp">
-	<div class="col-xs-2">
+	<div class="col-xs-2" id="sele">
 	   <select id="field" class="form-control" name="field">
 	      <option value="subject"> 제목
 	      <option value="writer"> 작성자
@@ -145,7 +150,9 @@ $(document).ready(function () {
 	   <input type='text' id='word' name='word' size='10' class="form-control" placeholder="검색어입력">
 	</div>
 	   <input type='button' class="btn btn-default" value="검색" id='searchIt'>
+	   <input type="button" class="btn btn-default" onclick="location='board.jsp'" value="글쓰기">
 </form>
+
 </div>
 </body>
 </html>

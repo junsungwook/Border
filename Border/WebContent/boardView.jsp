@@ -57,7 +57,7 @@ $(document).ready(function(){
 				}
 				htmlStr +="</table>";
 				$("#result").html(htmlStr);	
-
+				$("#msg").val("");
 			},
 			error:function(e){
 				alert("error : "+ e);

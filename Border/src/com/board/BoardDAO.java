@@ -236,7 +236,7 @@ public class BoardDAO {
        String sql="";
           try {
              con = getConnection();
-             sql = "select * from commentboard where bnum=?";
+             sql = "select * from commentboard where bnum=? order by cnum desc";
              ps = con.prepareStatement(sql);
              ps.setInt(1, bnum);
              rs = ps.executeQuery();
