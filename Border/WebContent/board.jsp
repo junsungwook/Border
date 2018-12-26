@@ -64,14 +64,7 @@ body{
 		<tr>
 			<td>제목</td>
 			<td>
-			<%if(request.getParameter("num")==null){%>
 				<input type="text" name="subject" id="subject" class="form-control">
-			<%}
-			else{%>
-				<input type="text" name="subject" id="subject" value="[답변]" class="form-control">
-			<% }%>
-			
-			
 			</td>
 		</tr>
 		<tr>

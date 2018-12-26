@@ -45,7 +45,7 @@ $(document).ready(function(){
 			data:{"msg":$("#msg").val(),"num":$("#num").val()},
 			success:function(data){
 				if(data.trim()==1){
-					alert("로그인하세요");
+					alert("댓글 달기는 로그인 후 이용 가능합니다");
 					location.href="login.jsp";
 				}else{
 					data = $.parseJSON(data);

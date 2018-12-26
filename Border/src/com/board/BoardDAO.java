@@ -220,8 +220,7 @@ public class BoardDAO {
              ps.setInt(3, cb.getBnum());
              ps.executeUpdate();
           } catch (Exception e) {
-             // TODO Auto-generated catch block
-             e.printStackTrace();
+            e.printStackTrace();
           }finally {
              closeCon(con,ps,rs);
           }
@@ -250,8 +249,7 @@ public class BoardDAO {
  				 arr.add(cb);
              }
           } catch (Exception e) {
-             // TODO Auto-generated catch block
-             e.printStackTrace();
+            e.printStackTrace();
           }finally {
              closeCon(con,ps,rs);
           }
@@ -280,7 +278,6 @@ public class BoardDAO {
 	            	}	 
 	            }
 	         } catch (Exception e) {
-	            // TODO Auto-generated catch block
 	            e.printStackTrace();
 	         }finally {
 	            closeCon(con,ps,rs);
@@ -311,7 +308,6 @@ public class BoardDAO {
 	            }
 	            System.out.println("dd:"+sql);
 	         } catch (Exception e) {
-	            // TODO Auto-generated catch block
 	            e.printStackTrace();
 	         }finally {
 	            closeCon(con,ps,rs);
@@ -324,7 +320,6 @@ public class BoardDAO {
 	         if(con!=null)con.close();
 	         if(ps!=null)ps.close();
 	      } catch (SQLException e) {
-	         // TODO Auto-generated catch block
 	         e.printStackTrace();
 	      }
 	   
@@ -336,7 +331,6 @@ public class BoardDAO {
 	      if(st!=null)st.close();
 	      if(rs!=null)rs.close();
 	   } catch (SQLException e) {
-	      // TODO Auto-generated catch block
 	      e.printStackTrace();
 	   }
 	}
