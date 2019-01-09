@@ -19,8 +19,6 @@ if(userid==null){
 	cb.setMsg(msg);
 	cb.setUserid(userid);
 	dao.commentInsert(cb);
-
 	response.sendRedirect("commentList.jsp?num="+bnum);
 }
-
 %>

@@ -26,33 +26,29 @@ public class BoardDAO {
       return ds.getConnection();
    }
    public BoardDAO() {
-      try {
-               Class.forName("oracle.jdbc.driver.OracleDriver");
-               url ="jdbc:oracle:thin:@localhost:1521:xe";
-               id = "scott";
-               pwd = "TIGER";
-            } 
-            catch (ClassNotFoundException e) {
+	   try{
+		   Class.forName("oracle.jdbc.driver.OracleDriver");
+		   url ="jdbc:oracle:thin:@localhost:1521:xe";
+		   id = "scott";
+		   pwd = "TIGER";
+	   }catch (ClassNotFoundException e) {
                e.printStackTrace();
-            }
-      }
-   //추가
+       }
+   }
+   //카운팅(전체, 검색된 것)
    public int size(String field,String word) {
-      
       Connection con =null;
       Statement st = null;
       ResultSet rs = null;
       String sql="";
       int cnt =0;
-     
          try {
          con = getConnection();
          if(field.equals("")) {
         	 sql = "select count(*) from board";
          }else {
-                sql="select count(*) from board where "+field+" like '%"+word+"%'";
-          }
-         
+             sql="select count(*) from board where "+field+" like '%"+word+"%'";
+         }
             st = con.createStatement();
             rs = st.executeQuery(sql);
             if (rs.next()) {
@@ -65,7 +61,8 @@ public class BoardDAO {
             closeCon(con,st,rs);
          }
       return cnt;
-}
+   }
+   //게시판 글쓰기
    public void boardInsert(BoardBean b) {
          Connection con= null;
          PreparedStatement ps =  null;
@@ -120,7 +117,7 @@ public class BoardDAO {
             
       }
    
-   //전체보기
+   //전체보기 
    public ArrayList<BoardBean> boardList(String field, String search,int startRow,int endRow) {
       ArrayList<BoardBean> arr =new ArrayList<BoardBean>();
       Connection con =null;
@@ -163,7 +160,7 @@ public class BoardDAO {
          }
       return arr;
    }
-   //글 보기
+   //글 상세보기
    public BoardBean getBoard(int num) {
 	      Connection con =null;
 	      PreparedStatement ps = null;
@@ -224,7 +221,6 @@ public class BoardDAO {
           }finally {
              closeCon(con,ps,rs);
           }
-          
     }
    //댓글 뿌리기
    public ArrayList<CommentBean> commentList(int bnum) {
@@ -256,34 +252,35 @@ public class BoardDAO {
           return arr;
           
     }
+   //비번 맞는지 조회
    public boolean delBoard(int num,String passwd) {
-	      Connection con =null;
-	      PreparedStatement ps = null;
-	      ResultSet rs = null;
-	      String sql="";
-	      boolean b=false;
-	         try {
-	        	con=getConnection();
-	            sql = "select passwd from board where num=?";
-	            ps = con.prepareStatement(sql);
-	            ps.setInt(1, num);
-	            rs = ps.executeQuery();
-	            if(rs.next()) {
-	            	if(rs.getString("passwd").equals(passwd)) {
-	            		sql = "delete from board where num=?";
-		            	 PreparedStatement ps1 =con.prepareStatement(sql); 
-		            	 ps1.setInt(1, num);
-		            	 ps1.executeUpdate();
-		            	 b = true;
-	            	}	 
-	            }
-	         } catch (Exception e) {
-	            e.printStackTrace();
-	         }finally {
-	            closeCon(con,ps,rs);
-	         }
-			return b;
-	   }
+      Connection con =null;
+      PreparedStatement ps = null;
+      ResultSet rs = null;
+      String sql="";
+      boolean b=false;
+         try {
+        	con=getConnection();
+            sql = "select passwd from board where num=?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, num);
+            rs = ps.executeQuery();
+            if(rs.next()) {
+            	if(rs.getString("passwd").equals(passwd)) {
+            		sql = "delete from board where num=?";
+	            	 PreparedStatement ps1 =con.prepareStatement(sql); 
+	            	 ps1.setInt(1, num);
+	            	 ps1.executeUpdate();
+	            	 b = true;
+            	}	 
+            }
+         } catch (Exception e) {
+            e.printStackTrace();
+         }finally {
+            closeCon(con,ps,rs);
+         }
+		return b;
+   }
    //수정
    public boolean updateBoard(BoardBean bean) {
 	      Connection con =null;
@@ -314,8 +311,12 @@ public class BoardDAO {
 	         }
 			return b;
 	   }
+   
+   
+   
+   
+   //닫아주기
 	private void closeCon(Connection con, PreparedStatement ps){
-	      
 	      try {
 	         if(con!=null)con.close();
 	         if(ps!=null)ps.close();
@@ -325,7 +326,6 @@ public class BoardDAO {
 	   
 	}
 	private void closeCon(Connection con,Statement st, ResultSet rs){
-	   
 	   try {
 	      if(con!=null)con.close();
 	      if(st!=null)st.close();
